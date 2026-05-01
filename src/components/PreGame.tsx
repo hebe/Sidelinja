@@ -173,9 +173,11 @@ export default function PreGame() {
           </div>
         </div>
 
-        <div style={{ flex: 1, minHeight: 16 }} />
+        <div style={{ minHeight: 16 }} />
+      </div>
 
-        {/* Start kamp */}
+      {/* Sticky bottom button — always visible regardless of scroll position */}
+      <div style={{ padding: "0 16px 16px", flexShrink: 0 }}>
         <button
           className="btn-primary"
           onClick={handleStart}
