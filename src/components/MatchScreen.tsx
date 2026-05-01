@@ -62,10 +62,20 @@ export default function MatchScreen() {
   const [modal, setModal] = useState<ModalState>(null);
   const [clockModalOpen, setClockModalOpen] = useState(false);
 
-  // Timer tick
+  // Timer tick — wall-clock based, so the interval only drives display redraws
   useEffect(() => {
+    tick(); // correct stale persisted state immediately on mount
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
+  }, [tick]);
+
+  // Catch up time lost while the app was in the background
+  useEffect(() => {
+    function onVisibilityChange() {
+      if (document.visibilityState === "visible") tick();
+    }
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
   }, [tick]);
 
   // Sync to Neon when game finishes

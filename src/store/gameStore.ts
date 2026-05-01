@@ -44,6 +44,8 @@ export interface CurrentGame {
   timerSeconds: number;
   isRunning: boolean;
   currentHalf: number;
+  clockStartedAt: number | null;
+  secondsAtStart: number;
 }
 
 interface GameStore {
@@ -111,6 +113,8 @@ export const useGameStore = create<GameStore>()(
             timerSeconds: 0,
             isRunning: false,
             currentHalf: 1,
+            clockStartedAt: null,
+            secondsAtStart: 0,
           },
           events: [],
           screen: "match",
@@ -128,10 +132,22 @@ export const useGameStore = create<GameStore>()(
           currentGame.status !== "second_half"
         )
           return;
+        if (!currentGame.clockStartedAt) {
+          // Migrate persisted state that predates wall-clock tracking
+          set({
+            currentGame: {
+              ...currentGame,
+              clockStartedAt: Date.now(),
+              secondsAtStart: currentGame.timerSeconds,
+            },
+          });
+          return;
+        }
+        const elapsed = Math.floor((Date.now() - currentGame.clockStartedAt) / 1000);
         set({
           currentGame: {
             ...currentGame,
-            timerSeconds: currentGame.timerSeconds + 1,
+            timerSeconds: currentGame.secondsAtStart + elapsed,
           },
         });
       },
@@ -144,18 +160,39 @@ export const useGameStore = create<GameStore>()(
           currentGame.status !== "second_half"
         )
           return;
-        set({
-          currentGame: {
-            ...currentGame,
-            isRunning: !currentGame.isRunning,
-          },
-        });
+        if (!currentGame.isRunning) {
+          set({
+            currentGame: {
+              ...currentGame,
+              isRunning: true,
+              clockStartedAt: Date.now(),
+              secondsAtStart: currentGame.timerSeconds,
+            },
+          });
+        } else {
+          const elapsed = currentGame.clockStartedAt
+            ? Math.floor((Date.now() - currentGame.clockStartedAt) / 1000)
+            : 0;
+          set({
+            currentGame: {
+              ...currentGame,
+              isRunning: false,
+              clockStartedAt: null,
+              timerSeconds: currentGame.secondsAtStart + elapsed,
+            },
+          });
+        }
       },
 
       advanceHalf: () => {
         const { currentGame } = get();
         if (!currentGame) return;
-        const { status, numHalves } = currentGame;
+        const { status, numHalves, isRunning, clockStartedAt, secondsAtStart } = currentGame;
+
+        const finalSeconds =
+          isRunning && clockStartedAt
+            ? secondsAtStart + Math.floor((Date.now() - clockStartedAt) / 1000)
+            : currentGame.timerSeconds;
 
         if (status === "first_half") {
           set({
@@ -163,6 +200,8 @@ export const useGameStore = create<GameStore>()(
               ...currentGame,
               status: "halftime",
               isRunning: false,
+              clockStartedAt: null,
+              timerSeconds: finalSeconds,
             },
           });
         } else if (status === "halftime") {
@@ -172,7 +211,9 @@ export const useGameStore = create<GameStore>()(
                 ...currentGame,
                 status: "second_half",
                 isRunning: false,
+                clockStartedAt: null,
                 timerSeconds: 0,
+                secondsAtStart: 0,
                 currentHalf: 2,
               },
             });
@@ -182,6 +223,8 @@ export const useGameStore = create<GameStore>()(
                 ...currentGame,
                 status: "finished",
                 isRunning: false,
+                clockStartedAt: null,
+                timerSeconds: finalSeconds,
               },
             });
           }
@@ -191,6 +234,8 @@ export const useGameStore = create<GameStore>()(
               ...currentGame,
               status: "finished",
               isRunning: false,
+              clockStartedAt: null,
+              timerSeconds: finalSeconds,
             },
           });
         }
