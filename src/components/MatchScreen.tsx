@@ -137,7 +137,7 @@ export default function MatchScreen() {
           )}
 
           {isFinished && (
-            <div style={{ color: "var(--color-accent)", fontWeight: 700, fontSize: "0.95rem" }}>
+            <div style={{ color: "var(--color-text-muted)", fontWeight: 700, fontSize: "0.95rem" }}>
               Kampen er over
             </div>
           )}
