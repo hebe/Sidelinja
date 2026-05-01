@@ -48,7 +48,7 @@ export default function FlipScreen() {
 
   return (
     <div className="app-shell">
-      <div style={{ padding: "0 16px" }}>
+      <div style={{ padding: "0 16px", flexShrink: 0 }}>
         <Header />
       </div>
 

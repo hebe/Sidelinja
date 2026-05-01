@@ -50,7 +50,7 @@ export default function PreGame() {
 
   return (
     <div className="app-shell">
-      <div style={{ padding: "0 16px" }}>
+      <div style={{ padding: "0 16px", flexShrink: 0 }}>
         <Header />
       </div>
 
@@ -173,19 +173,16 @@ export default function PreGame() {
           </div>
         </div>
 
-        <div style={{ minHeight: 16 }} />
-      </div>
-
-      {/* Sticky bottom button — always visible regardless of scroll position */}
-      <div style={{ padding: "0 16px 16px", flexShrink: 0 }}>
-        <button
-          className="btn-primary"
-          onClick={handleStart}
-          disabled={!awayTeam.trim()}
-          style={{ opacity: awayTeam.trim() ? 1 : 0.5 }}
-        >
-          Start kamp →
-        </button>
+        <div style={{ marginTop: "auto", paddingTop: 16 }}>
+          <button
+            className="btn-primary"
+            onClick={handleStart}
+            disabled={!awayTeam.trim()}
+            style={{ opacity: awayTeam.trim() ? 1 : 0.5 }}
+          >
+            Start kamp →
+          </button>
+        </div>
       </div>
     </div>
   );
