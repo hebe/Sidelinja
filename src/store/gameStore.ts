@@ -195,26 +195,48 @@ export const useGameStore = create<GameStore>()(
             : currentGame.timerSeconds;
 
         if (status === "first_half") {
-          set({
-            currentGame: {
-              ...currentGame,
-              status: "halftime",
-              isRunning: false,
-              clockStartedAt: null,
-              timerSeconds: finalSeconds,
-            },
-          });
-        } else if (status === "halftime") {
-          if (numHalves > 1) {
+          if (numHalves === 1) {
             set({
               currentGame: {
                 ...currentGame,
-                status: "second_half",
+                status: "finished",
                 isRunning: false,
                 clockStartedAt: null,
-                timerSeconds: 0,
-                secondsAtStart: 0,
-                currentHalf: 2,
+                timerSeconds: finalSeconds,
+              },
+            });
+          } else {
+            set({
+              currentGame: {
+                ...currentGame,
+                status: "halftime",
+                isRunning: false,
+                clockStartedAt: null,
+                timerSeconds: finalSeconds,
+              },
+            });
+          }
+        } else if (status === "halftime") {
+          set({
+            currentGame: {
+              ...currentGame,
+              status: "second_half",
+              isRunning: false,
+              clockStartedAt: null,
+              timerSeconds: 0,
+              secondsAtStart: 0,
+              currentHalf: currentGame.currentHalf + 1,
+            },
+          });
+        } else if (status === "second_half") {
+          if (currentGame.currentHalf < numHalves) {
+            set({
+              currentGame: {
+                ...currentGame,
+                status: "halftime",
+                isRunning: false,
+                clockStartedAt: null,
+                timerSeconds: finalSeconds,
               },
             });
           } else {
@@ -228,16 +250,6 @@ export const useGameStore = create<GameStore>()(
               },
             });
           }
-        } else if (status === "second_half") {
-          set({
-            currentGame: {
-              ...currentGame,
-              status: "finished",
-              isRunning: false,
-              clockStartedAt: null,
-              timerSeconds: finalSeconds,
-            },
-          });
         }
       },
 
@@ -350,7 +362,7 @@ export function useHalfLabel(): string {
   switch (game.status) {
     case "first_half":  return "1. omgang";
     case "halftime":    return "Pause";
-    case "second_half": return "2. omgang";
+    case "second_half": return `${game.currentHalf}. omgang`;
     case "finished":    return "Slutt";
     default:            return "";
   }
@@ -360,9 +372,9 @@ export function useAdvanceLabel(): string | null {
   const game = useGameStore((s) => s.currentGame);
   if (!game) return null;
   switch (game.status) {
-    case "first_half":  return "Avslutt 1. omgang";
-    case "halftime":    return "Start 2. omgang";
-    case "second_half": return "Avslutt kamp";
+    case "first_half":  return game.numHalves === 1 ? "Avslutt kamp" : "Avslutt 1. omgang";
+    case "halftime":    return `Start ${game.currentHalf + 1}. omgang`;
+    case "second_half": return game.currentHalf < game.numHalves ? `Avslutt ${game.currentHalf}. omgang` : "Avslutt kamp";
     case "finished":    return null;
     default:            return null;
   }
