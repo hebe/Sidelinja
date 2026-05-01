@@ -242,14 +242,8 @@ export function useScore() {
 
   for (const e of events) {
     if (e.type !== "GOAL" && e.type !== "PENALTY") continue;
-    if (e.isSelvmål) {
-      // selvmål: counts for the opposing team
-      if (e.team === "home") away++;
-      else home++;
-    } else {
-      if (e.team === "home") home++;
-      else away++;
-    }
+    if (e.team === "home") home++;
+    else away++;
   }
 
   return { home, away };
