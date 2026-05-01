@@ -195,15 +195,27 @@ export const useGameStore = create<GameStore>()(
             : currentGame.timerSeconds;
 
         if (status === "first_half") {
-          set({
-            currentGame: {
-              ...currentGame,
-              status: "halftime",
-              isRunning: false,
-              clockStartedAt: null,
-              timerSeconds: finalSeconds,
-            },
-          });
+          if (numHalves === 1) {
+            set({
+              currentGame: {
+                ...currentGame,
+                status: "finished",
+                isRunning: false,
+                clockStartedAt: null,
+                timerSeconds: finalSeconds,
+              },
+            });
+          } else {
+            set({
+              currentGame: {
+                ...currentGame,
+                status: "halftime",
+                isRunning: false,
+                clockStartedAt: null,
+                timerSeconds: finalSeconds,
+              },
+            });
+          }
         } else if (status === "halftime") {
           if (numHalves > 1) {
             set({
@@ -360,7 +372,7 @@ export function useAdvanceLabel(): string | null {
   const game = useGameStore((s) => s.currentGame);
   if (!game) return null;
   switch (game.status) {
-    case "first_half":  return "Avslutt 1. omgang";
+    case "first_half":  return game.numHalves === 1 ? "Avslutt kamp" : "Avslutt 1. omgang";
     case "halftime":    return "Start 2. omgang";
     case "second_half": return "Avslutt kamp";
     case "finished":    return null;
