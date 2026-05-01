@@ -1,5 +1,5 @@
 const CACHE_NAME = "sidelinja-v1";
-const STATIC_ASSETS = ["/", "/manifest.json", "/icons/icon-192.png"];
+const STATIC_ASSETS = ["/", "/manifest.webmanifest", "/apple-touch-icon.png", "/icon-192.png", "/favicon.svg"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(

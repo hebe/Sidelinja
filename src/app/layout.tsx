@@ -5,7 +5,7 @@ import SwRegister from "@/components/SwRegister";
 export const metadata: Metadata = {
   title: "Sidelinja",
   description: "Følg ungdomsfotballen fra sidelinjen",
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -30,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="nb" className="h-full">
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className="h-full">
         <SwRegister />
