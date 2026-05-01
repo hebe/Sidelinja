@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   useGameStore,
-  useCurrentMinute,
   usePlayerCards,
   type EventTeam,
   type EventType,
@@ -47,7 +46,6 @@ export default function HendelseModal({ team, editEventId, onClose }: Props) {
   const addEvent = useGameStore((s) => s.addEvent);
   const updateEvent = useGameStore((s) => s.updateEvent);
   const deleteEvent = useGameStore((s) => s.deleteEvent);
-  const currentMinute = useCurrentMinute();
   const rawSecs = game?.timerSeconds ?? 0;
 
   const existingEvent = editEventId
@@ -123,8 +121,6 @@ export default function HendelseModal({ team, editEventId, onClose }: Props) {
       onClose();
     }
   }
-
-  const _m = currentMinute; // keep linter happy
 
   const isNumberRequired = hendelseType !== "SKADE";
 

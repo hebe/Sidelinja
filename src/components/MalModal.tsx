@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  useGameStore,
-  useCurrentMinute,
-  type EventTeam,
-} from "@/store/gameStore";
+import { useGameStore, type EventTeam } from "@/store/gameStore";
 
 interface Props {
   team: EventTeam;
@@ -25,7 +21,6 @@ export default function MalModal({ team, editEventId, onClose }: Props) {
   const addEvent = useGameStore((s) => s.addEvent);
   const updateEvent = useGameStore((s) => s.updateEvent);
   const deleteEvent = useGameStore((s) => s.deleteEvent);
-  const currentMinute = useCurrentMinute();
   const rawSecs = game?.timerSeconds ?? 0;
 
   const existingEvent = editEventId
@@ -75,8 +70,6 @@ export default function MalModal({ team, editEventId, onClose }: Props) {
       onClose();
     }
   }
-
-  const _ = currentMinute; // used via adjustedSecs
 
   return (
     <>

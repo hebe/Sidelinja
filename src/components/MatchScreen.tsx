@@ -14,6 +14,7 @@ import Header from "./Header";
 import MalModal from "./MalModal";
 import HendelseModal from "./HendelseModal";
 import EventLog from "./EventLog";
+import { syncGameToNeon } from "@/lib/sync";
 
 type ModalState =
   | { type: "mal"; team: EventTeam }
@@ -65,6 +66,25 @@ export default function MatchScreen() {
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [tick]);
+
+  // Sync to Neon when game finishes
+  useEffect(() => {
+    if (game?.status === "finished") {
+      syncGameToNeon(game, useGameStore.getState().events);
+    }
+  }, [game?.status]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Retry sync on reconnect
+  useEffect(() => {
+    function onOnline() {
+      const { currentGame, events } = useGameStore.getState();
+      if (currentGame?.status === "finished") {
+        syncGameToNeon(currentGame, events);
+      }
+    }
+    window.addEventListener("online", onOnline);
+    return () => window.removeEventListener("online", onOnline);
+  }, []);
 
   if (!game) return null;
 
