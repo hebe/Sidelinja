@@ -50,6 +50,7 @@ export default function MatchScreen() {
   const game = useGameStore((s) => s.currentGame);
   const toggleClock = useGameStore((s) => s.toggleClock);
   const advanceHalf = useGameStore((s) => s.advanceHalf);
+  const resetGame = useGameStore((s) => s.resetGame);
   const clockDisplay = useGameStore((s) => s.clockDisplay);
   const setClockDisplay = useGameStore((s) => s.setClockDisplay);
   const tick = useGameStore((s) => s.tick);
@@ -130,7 +131,16 @@ export default function MatchScreen() {
                 onClick={(e) => { e.stopPropagation(); toggleClock(); }}
                 aria-label={game.isRunning ? "Pause" : "Start"}
               >
-                {game.isRunning ? "⏸" : "▶"}
+                {game.isRunning ? (
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+                    <rect x="5" y="4" width="4" height="16" rx="1.5" />
+                    <rect x="15" y="4" width="4" height="16" rx="1.5" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
               </button>
             )}
           </div>
@@ -154,9 +164,18 @@ export default function MatchScreen() {
           )}
 
           {isFinished && (
-            <div style={{ color: "var(--color-text-muted)", fontWeight: 700, fontSize: "0.95rem" }}>
-              Kampen er over
-            </div>
+            <>
+              <div style={{ color: "var(--color-text-muted)", fontWeight: 700, fontSize: "0.95rem" }}>
+                Kampen er over
+              </div>
+              <button
+                className="btn-primary"
+                style={{ width: "auto", padding: "0 32px", marginTop: 6 }}
+                onClick={resetGame}
+              >
+                Ny kamp
+              </button>
+            </>
           )}
         </div>
 

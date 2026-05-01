@@ -373,10 +373,11 @@ body {
 }
 
 .clock-row {
+  position: relative;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
   cursor: pointer;
 }
 
@@ -416,24 +417,29 @@ body {
 }
 
 .play-btn {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--color-accent);
+  position: absolute;
+  right: 0;
+  width: 56px;
+  height: 56px;
+  background: none;
   border: none;
-  color: var(--color-accent-btn-text);
-  font-size: 1.6rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-btn);
-  transition: transform 0.1s, background 0.15s;
-  flex-shrink: 0;
+  opacity: 0.75;
+  transition: opacity 0.15s, transform 0.1s;
+  border-radius: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.play-btn:hover {
+  opacity: 1;
 }
 
 .play-btn:active {
-  transform: scale(0.93);
+  transform: scale(0.9);
+  opacity: 1;
 }
 
 .half-advance-btn {
