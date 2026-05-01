@@ -126,8 +126,8 @@ body {
   height: 7px;
   background: transparent;
   border: none;
-  border-top: 2px solid var(--color-border);
-  border-bottom: 2px solid var(--color-border);
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
 }
 
 .header-title {
@@ -149,10 +149,10 @@ body {
   background: none;
   border: none;
   color: var(--color-text-muted);
-  font-size: 1.4rem;
   cursor: pointer;
   padding: 4px 0;
-  line-height: 1;
+  display: flex;
+  align-items: center;
   transition: color 0.15s;
 }
 
@@ -478,6 +478,7 @@ body {
 .score-names-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .score-team-name {
@@ -487,10 +488,14 @@ body {
   text-transform: uppercase;
   color: var(--color-text);
   line-height: 1.2;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .score-team-name.right {
-  text-align: right;
+  text-align: left;
 }
 
 .score-display {
@@ -555,7 +560,7 @@ body {
 }
 
 .action-btn {
-  height: var(--btn-height);
+  height: 100px;
   border: 1.5px solid var(--color-border);
   border-radius: var(--btn-radius);
   font-size: 1rem;

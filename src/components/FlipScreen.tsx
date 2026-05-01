@@ -14,6 +14,16 @@ interface HistoryGame {
   status: string;
 }
 
+interface HistoryEvent {
+  id: string;
+  minute: number;
+  type: string;
+  team: string;
+  player_number: number | null;
+  subtype: string | null;
+  is_selvmal: boolean;
+}
+
 function formatHistoryDate(iso: string): string {
   if (!iso) return "";
   const d = new Date(iso);
@@ -22,6 +32,20 @@ function formatHistoryDate(iso: string): string {
     "jul", "aug", "sep", "okt", "nov", "des",
   ];
   return `${d.getDate()}. ${months[d.getMonth()]}`;
+}
+
+function eventIcon(e: HistoryEvent): string {
+  if (e.type === "GOAL" || e.type === "PENALTY") return "⚽";
+  if (e.type === "INJURY") return "🤕";
+  if (e.subtype === "RED" || e.subtype === "DIRECT_RED") return "🟥";
+  return "🟨";
+}
+
+function eventLabel(e: HistoryEvent, game: HistoryGame): string {
+  const teamName = e.team === "home" ? game.home_team : game.away_team;
+  const player = e.player_number ? ` #${e.player_number}` : "";
+  const selvmål = e.is_selvmal ? " (selvmål)" : "";
+  return `${teamName}${player}${selvmål}`;
 }
 
 export default function FlipScreen() {
@@ -34,6 +58,10 @@ export default function FlipScreen() {
   const [loading, setLoading] = useState(true);
   const [teamInput, setTeamInput] = useState(myTeamName);
 
+  const [selectedGame, setSelectedGame] = useState<HistoryGame | null>(null);
+  const [events, setEvents] = useState<HistoryEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
   useEffect(() => {
     fetch("/api/games")
       .then((r) => r.json())
@@ -44,6 +72,22 @@ export default function FlipScreen() {
 
   function handleTeamSave() {
     setMyTeamName(teamInput.trim() || myTeamName);
+  }
+
+  function openGame(game: HistoryGame) {
+    setSelectedGame(game);
+    setEvents([]);
+    setEventsLoading(true);
+    fetch(`/api/games/${game.id}`)
+      .then((r) => r.json())
+      .then((data) => setEvents(data.events ?? []))
+      .catch(() => setEvents([]))
+      .finally(() => setEventsLoading(false));
+  }
+
+  function closeSheet() {
+    setSelectedGame(null);
+    setEvents([]);
   }
 
   return (
@@ -112,7 +156,12 @@ export default function FlipScreen() {
         )}
 
         {history.map((g) => (
-          <div key={g.id} className="history-item">
+          <button
+            key={g.id}
+            className="history-item"
+            onClick={() => openGame(g)}
+            style={{ width: "100%", background: "none", border: "none", color: "inherit", textAlign: "left", cursor: "pointer" }}
+          >
             <span className="history-date">{formatHistoryDate(g.date)}</span>
             <span className="history-teams">
               {g.home_team} – {g.away_team}
@@ -120,7 +169,10 @@ export default function FlipScreen() {
             <span className="history-score">
               {g.home_score}–{g.away_score}
             </span>
-          </div>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.4, flexShrink: 0 }} aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         ))}
 
         {/* Easter egg */}
@@ -137,6 +189,45 @@ export default function FlipScreen() {
           🎮 Drep tiden?
         </div>
       </div>
+
+      {/* ── Game event sheet ─────────────────────────────────────────────── */}
+      {selectedGame && (
+        <>
+          <div className="sheet-overlay" onClick={closeSheet} />
+          <div className="bottom-sheet">
+            <div className="sheet-header">
+              <div className="sheet-handle" />
+              <div className="sheet-title">
+                {selectedGame.home_team} – {selectedGame.away_team}
+              </div>
+              <div className="sheet-subtitle">
+                {formatHistoryDate(selectedGame.date)} · {selectedGame.home_score}–{selectedGame.away_score}
+              </div>
+            </div>
+
+            <div className="sheet-body">
+              {eventsLoading && (
+                <div style={{ color: "var(--color-text-muted)", fontSize: "0.9rem", padding: "16px 0" }}>
+                  Laster hendelser...
+                </div>
+              )}
+              {!eventsLoading && events.length === 0 && (
+                <div style={{ color: "var(--color-text-muted)", fontSize: "0.9rem", padding: "16px 0" }}>
+                  Ingen hendelser registrert.
+                </div>
+              )}
+              {events.map((e) => (
+                <div key={e.id} className="event-row">
+                  <span className="event-minute">{e.minute}&apos;</span>
+                  <span className="event-icon">{eventIcon(e)}</span>
+                  <span className="event-team">{eventLabel(e, selectedGame)}</span>
+                </div>
+              ))}
+              <div style={{ height: 16 }} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
