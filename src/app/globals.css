@@ -2,19 +2,19 @@
 
 /* ─── Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  /* Colors */
-  --color-bg: #2952A3;
-  --color-bg-deep: #1e3d7a;
-  --color-surface: #3762c0;
-  --color-surface-raised: #4272d0;
-  --color-surface-hover: #4878d8;
+  /* Colors — base derived from icon blue oklch(0.40 0.21 265) = #1132b2 */
+  --color-bg:             oklch(0.40 0.21 265);
+  --color-bg-deep:        oklch(0.30 0.20 265);
+  --color-surface:        oklch(0.48 0.20 265);
+  --color-surface-raised: oklch(0.54 0.18 265);
+  --color-surface-hover:  oklch(0.58 0.17 265);
   --color-border: rgba(255, 255, 255, 0.15);
   --color-text: #ffffff;
   --color-text-muted: rgba(255, 255, 255, 0.65);
   --color-accent: #ffffff;
   --color-accent-hover: rgba(255, 255, 255, 0.88);
-  --color-accent-interactive: #7ab3f0;
-  --color-accent-btn-text: #1e3d7a;
+  --color-accent-interactive: oklch(0.72 0.13 265);
+  --color-accent-btn-text: oklch(0.30 0.20 265);
   --color-success: #4cdb7a;
   --color-danger: #e85555;
   --color-card-yellow: #f0c040;
@@ -58,12 +58,14 @@
 html {
   height: 100%;
   height: -webkit-fill-available;
+  height: 100dvh;
   overflow: hidden;
 }
 
 body {
   height: 100%;
   height: -webkit-fill-available;
+  height: 100dvh;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;

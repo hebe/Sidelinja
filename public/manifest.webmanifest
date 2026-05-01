@@ -4,8 +4,8 @@
   "description": "Følg ungdomsfotballen fra sidelinjen",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#2952A3",
-  "theme_color": "#2952A3",
+  "background_color": "#1132b2",
+  "theme_color": "#1132b2",
   "orientation": "portrait",
   "icons": [
     {

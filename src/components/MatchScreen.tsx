@@ -170,7 +170,7 @@ export default function MatchScreen() {
                 className="action-btn action-btn-goal"
                 onClick={() => setModal({ type: "mal", team: "home" })}
               >
-                ⚽ Mål!
+                MÅL
               </button>
               <button
                 className="action-btn action-btn-event"
@@ -186,7 +186,7 @@ export default function MatchScreen() {
                 className="action-btn action-btn-goal"
                 onClick={() => setModal({ type: "mal", team: "away" })}
               >
-                ⚽ Mål!
+                MÅL
               </button>
               <button
                 className="action-btn action-btn-event"

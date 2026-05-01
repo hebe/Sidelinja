@@ -10,34 +10,43 @@ const OUT = path.join(__dirname, "../public");
 // The icon already has a solid background with rounded corners baked in —
 // no extra padding needed. For maskable we add a slight canvas expand.
 
+// Blue matching the SVG's own rounded-rect background (rgb(17,50,178) from the SVG path)
+const BG = { r: 17, g: 50, b: 178, alpha: 1 };
+
+async function renderOnBg(size) {
+  const iconBuf = await sharp(SVG).resize(size, size).png().toBuffer();
+  return sharp({
+    create: { width: size, height: size, channels: 4, background: BG },
+  })
+    .composite([{ input: iconBuf }])
+    .png()
+    .toBuffer();
+}
+
 async function render(size, outFile, opts = {}) {
   const { maskable = false } = opts;
-  let pipeline = sharp(SVG);
+  let buf;
   if (maskable) {
     // Maskable safe zone = 40% of icon area. Render icon at ~82% and center on bg.
     const inner = Math.round(size * 0.82);
     const pad = Math.round((size - inner) / 2);
     const iconBuf = await sharp(SVG).resize(inner, inner).png().toBuffer();
-    pipeline = sharp({
-      create: {
-        width: size,
-        height: size,
-        channels: 4,
-        background: { r: 41, g: 82, b: 163, alpha: 1 },
-      },
-    }).composite([{ input: iconBuf, top: pad, left: pad }]);
+    buf = await sharp({
+      create: { width: size, height: size, channels: 4, background: BG },
+    })
+      .composite([{ input: iconBuf, top: pad, left: pad }])
+      .png()
+      .toBuffer();
   } else {
-    pipeline = pipeline.resize(size, size);
+    buf = await renderOnBg(size);
   }
-  await pipeline.png().toFile(outFile);
+  fs.writeFileSync(outFile, buf);
   console.log(`✓ ${path.basename(outFile)}`);
 }
 
 // Build a multi-size .ico from PNG buffers (16, 32, 48)
 async function buildIco(sizes, outFile) {
-  const pngs = await Promise.all(
-    sizes.map((s) => sharp(SVG).resize(s, s).png().toBuffer())
-  );
+  const pngs = await Promise.all(sizes.map((s) => renderOnBg(s)));
 
   // ICO format: 6-byte header + N*16 dir entries + image data
   const header = Buffer.alloc(6);
