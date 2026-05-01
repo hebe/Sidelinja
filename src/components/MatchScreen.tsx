@@ -95,7 +95,7 @@ export default function MatchScreen() {
 
   return (
     <div className="app-shell">
-      <div style={{ padding: "0 16px" }}>
+      <div style={{ padding: "0 16px", flexShrink: 0 }}>
         <Header />
       </div>
 
@@ -120,7 +120,16 @@ export default function MatchScreen() {
                 onClick={(e) => { e.stopPropagation(); toggleClock(); }}
                 aria-label={game.isRunning ? "Pause" : "Start"}
               >
-                {game.isRunning ? "⏸" : "▶"}
+                {game.isRunning ? (
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+                    <rect x="5" y="4" width="4" height="16" rx="1.5" />
+                    <rect x="15" y="4" width="4" height="16" rx="1.5" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
               </button>
             )}
           </div>
