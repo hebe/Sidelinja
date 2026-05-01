@@ -60,6 +60,7 @@ export default function MatchScreen() {
   const advanceLabel = useAdvanceLabel();
 
   const [modal, setModal] = useState<ModalState>(null);
+  const [clockModalOpen, setClockModalOpen] = useState(false);
 
   // Timer tick
   useEffect(() => {
@@ -102,14 +103,27 @@ export default function MatchScreen() {
         {/* ── Clock section ──────────────────────────────────── */}
         <div className="clock-section">
           <span className="clock-half-label">{halfLabel}</span>
-          <span className="clock-time">{clockText}</span>
 
-          {/* play/pause */}
-          {isActive && (
-            <button className="play-btn" onClick={toggleClock} aria-label={game.isRunning ? "Pause" : "Start"}>
-              {game.isRunning ? "⏸" : "▶"}
-            </button>
-          )}
+          {/* Clock + play/pause side by side; tap clock to open match-state sheet */}
+          <div
+            className="clock-row"
+            onClick={() => !isFinished && setClockModalOpen(true)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && !isFinished && setClockModalOpen(true)}
+            aria-label="Kampstatus"
+          >
+            <span className="clock-time">{clockText}</span>
+            {isActive && (
+              <button
+                className="play-btn"
+                onClick={(e) => { e.stopPropagation(); toggleClock(); }}
+                aria-label={game.isRunning ? "Pause" : "Start"}
+              >
+                {game.isRunning ? "⏸" : "▶"}
+              </button>
+            )}
+          </div>
 
           {/* spilt / igjen toggle */}
           {isActive && (
@@ -129,13 +143,6 @@ export default function MatchScreen() {
             </div>
           )}
 
-          {/* advance half */}
-          {advanceLabel && !isFinished && (
-            <button className="half-advance-btn" onClick={advanceHalf}>
-              {advanceLabel}
-            </button>
-          )}
-
           {isFinished && (
             <div style={{ color: "var(--color-text-muted)", fontWeight: 700, fontSize: "0.95rem" }}>
               Kampen er over
@@ -145,15 +152,17 @@ export default function MatchScreen() {
 
         {/* ── Score + action section ─────────────────────────── */}
         <div className="score-section" style={{ padding: "0 0 8px" }}>
-          {/* Team names + score */}
+          {/* Score + team names */}
           <div className="score-header">
-            <div className="score-team-name">{game.homeTeam}</div>
             <div className="score-display">
               {score.home}
               <span className="score-sep"> – </span>
               {score.away}
             </div>
-            <div className="score-team-name right">{game.awayTeam}</div>
+            <div className="score-names-row">
+              <div className="score-team-name">{game.homeTeam}</div>
+              <div className="score-team-name right">{game.awayTeam}</div>
+            </div>
           </div>
 
           {/* Card badges */}
@@ -202,6 +211,29 @@ export default function MatchScreen() {
         <div style={{ flex: 1 }} />
         <EventLog />
       </div>
+
+      {/* ── Clock modal (advance half / end game) ──────────── */}
+      {clockModalOpen && (
+        <>
+          <div className="sheet-overlay" onClick={() => setClockModalOpen(false)} />
+          <div className="bottom-sheet">
+            <div className="sheet-header">
+              <div className="sheet-handle" />
+              <div className="sheet-title">{halfLabel}</div>
+            </div>
+            <div className="sheet-footer" style={{ borderTop: "none" }}>
+              {advanceLabel && (
+                <button
+                  className="btn-primary"
+                  onClick={() => { advanceHalf(); setClockModalOpen(false); }}
+                >
+                  {advanceLabel}
+                </button>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* ── Modals ─────────────────────────────────────────── */}
       {modal?.type === "mal" && (
