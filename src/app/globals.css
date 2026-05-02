@@ -58,14 +58,14 @@
 html {
   height: 100%;
   height: -webkit-fill-available;
-  height: 100svh;
+  height: 100dvh;
   overflow: hidden;
 }
 
 body {
   height: 100%;
   height: -webkit-fill-available;
-  height: 100svh;
+  height: 100dvh;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
