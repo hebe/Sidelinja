@@ -2,7 +2,11 @@
 
 import { useGameStore } from "@/store/gameStore";
 
-export default function Header() {
+interface HeaderProps {
+  onEasterEgg?: () => void;
+}
+
+export default function Header({ onEasterEgg }: HeaderProps = {}) {
   const screen = useGameStore((s) => s.screen);
   const setScreen = useGameStore((s) => s.setScreen);
 
@@ -22,10 +26,30 @@ export default function Header() {
         <div className="header-rule" />
       </div>
       <div className="header-bottom">
+        {onEasterEgg && (
+          <button
+            onClick={onEasterEgg}
+            style={{
+              position: "absolute",
+              top: 4,
+              left: 4,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "1.4rem",
+              lineHeight: 1,
+              padding: 4,
+            }}
+            aria-label="Tidsfordriv"
+          >
+            🤹
+          </button>
+        )}
         <button
           className="flip-btn"
           onClick={handleFlip}
           aria-label="Bytt skjerm"
+          style={{ position: "absolute", top: 4, right: 4 }}
         >
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
             <line x1="4" y1="6" x2="20" y2="6" />
