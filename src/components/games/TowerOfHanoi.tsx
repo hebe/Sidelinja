@@ -178,7 +178,7 @@ export default function TowerOfHanoi({ onClose }: Props) {
         style={{
           flex: 1,
           display: "flex",
-          alignItems: "flex-end",
+          alignItems: "stretch",
           justifyContent: "center",
           gap: 12,
           padding: "20px 16px 0",

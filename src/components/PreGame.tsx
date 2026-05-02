@@ -173,16 +173,17 @@ export default function PreGame() {
           </div>
         </div>
 
-        <div style={{ marginTop: "auto", paddingTop: 16 }}>
-          <button
-            className="btn-primary"
-            onClick={handleStart}
-            disabled={!awayTeam.trim()}
-            style={{ opacity: awayTeam.trim() ? 1 : 0.5 }}
-          >
-            Start kamp →
-          </button>
-        </div>
+      </div>
+
+      <div style={{ padding: "8px 16px 16px", flexShrink: 0 }}>
+        <button
+          className="btn-primary"
+          onClick={handleStart}
+          disabled={!awayTeam.trim()}
+          style={{ opacity: awayTeam.trim() ? 1 : 0.5 }}
+        >
+          Start kamp →
+        </button>
       </div>
     </div>
   );
