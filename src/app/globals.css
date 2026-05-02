@@ -140,9 +140,8 @@ body {
 }
 
 .header-bottom {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 6px;
+  position: relative;
+  height: 30px;
 }
 
 .flip-btn {

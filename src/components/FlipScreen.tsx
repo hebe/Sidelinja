@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useGameStore } from "@/store/gameStore";
 import Header from "./Header";
+import EasterEggModal from "./games/EasterEggModal";
+import TowerOfHanoi from "./games/TowerOfHanoi";
 
 interface HistoryGame {
   id: string;
@@ -62,6 +64,9 @@ export default function FlipScreen() {
   const [events, setEvents] = useState<HistoryEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(false);
 
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [activeGame, setActiveGame] = useState<"hanoi" | "ttt" | "quiz" | null>(null);
+
   useEffect(() => {
     fetch("/api/games")
       .then((r) => r.json())
@@ -90,10 +95,16 @@ export default function FlipScreen() {
     setEvents([]);
   }
 
+  async function deleteGame(id: string) {
+    await fetch(`/api/games/${id}`, { method: "DELETE" });
+    setHistory((h) => h.filter((g) => g.id !== id));
+    closeSheet();
+  }
+
   return (
     <div className="app-shell">
       <div style={{ padding: "0 16px", flexShrink: 0 }}>
-        <Header />
+        <Header onEasterEgg={() => setShowEasterEgg(true)} />
       </div>
 
       <div className="screen">
@@ -175,27 +186,28 @@ export default function FlipScreen() {
           </button>
         ))}
 
-        {/* Easter egg */}
-        <div style={{ flex: 1, minHeight: 40 }} />
-        <div
-          style={{
-            textAlign: "center",
-            color: "rgba(255,255,255,0.2)",
-            fontSize: "0.8rem",
-            fontWeight: 500,
-            padding: "8px 0 4px",
-          }}
-        >
-          🎮 Drep tiden?
-        </div>
       </div>
+
+      {/* ── Easter egg modals ────────────────────────────────────────────── */}
+      {showEasterEgg && !activeGame && (
+        <EasterEggModal
+          onClose={() => setShowEasterEgg(false)}
+          onSelectGame={(game) => {
+            setShowEasterEgg(false);
+            setActiveGame(game);
+          }}
+        />
+      )}
+      {activeGame === "hanoi" && (
+        <TowerOfHanoi onClose={() => setActiveGame(null)} />
+      )}
 
       {/* ── Game event sheet ─────────────────────────────────────────────── */}
       {selectedGame && (
         <>
           <div className="sheet-overlay" onClick={closeSheet} />
           <div className="bottom-sheet">
-            <div className="sheet-header">
+            <div className="sheet-header" style={{ position: "relative" }}>
               <div className="sheet-handle" />
               <div className="sheet-title">
                 {selectedGame.home_team} – {selectedGame.away_team}
@@ -203,6 +215,29 @@ export default function FlipScreen() {
               <div className="sheet-subtitle">
                 {formatHistoryDate(selectedGame.date)} · {selectedGame.home_score}–{selectedGame.away_score}
               </div>
+              <button
+                onClick={() => deleteGame(selectedGame.id)}
+                style={{
+                  position: "absolute",
+                  top: 16,
+                  right: 20,
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--color-text-muted)",
+                  padding: 4,
+                  lineHeight: 1,
+                }}
+                aria-label="Slett kamp"
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                  <path d="M10 11v6" />
+                  <path d="M14 11v6" />
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                </svg>
+              </button>
             </div>
 
             <div className="sheet-body">

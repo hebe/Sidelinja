@@ -1,6 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import sql, { ensureSchema } from "@/lib/db";
 
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await ensureSchema();
+    const { id } = await params;
+    await sql`DELETE FROM events WHERE game_id = ${id}`;
+    await sql`DELETE FROM games WHERE id = ${id}`;
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    console.error("DELETE /api/games/[id] error:", e);
+    return NextResponse.json({ ok: false }, { status: 500 });
+  }
+}
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
