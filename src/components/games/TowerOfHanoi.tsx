@@ -103,6 +103,7 @@ export default function TowerOfHanoi({ onClose }: Props) {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "16px 20px 12px",
+          paddingTop: "max(16px, env(safe-area-inset-top))",
           borderBottom: "1.5px solid var(--color-border)",
           flexShrink: 0,
         }}
@@ -288,6 +289,7 @@ export default function TowerOfHanoi({ onClose }: Props) {
       <div
         style={{
           padding: "16px 20px",
+          paddingBottom: "max(16px, env(safe-area-inset-bottom))",
           borderTop: "1.5px solid var(--color-border)",
           display: "flex",
           gap: 12,
