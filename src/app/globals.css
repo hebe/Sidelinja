@@ -56,56 +56,29 @@
 }
 
 html {
-  height: 100%;
-  height: -webkit-fill-available;
-  height: 100dvh;
-  overflow: hidden;
+  background: var(--color-bg);
 }
 
 body {
-  height: 100%;
-  height: -webkit-fill-available;
-  height: 100dvh;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
-  overflow: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-#__next, main {
-  height: 100%;
 }
 
 /* ─── App Shell ──────────────────────────────────────────────────────── */
 .app-shell {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  height: -webkit-fill-available;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: min(env(safe-area-inset-bottom), 50px);
+  padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
-  overflow: hidden;
 }
 
 .screen {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 0 var(--spacing-screen) var(--spacing-screen);
-  overscroll-behavior: contain;
 }
 
 .screen-noscroll {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
   padding: 0 var(--spacing-screen);
 }
 

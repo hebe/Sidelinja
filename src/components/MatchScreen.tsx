@@ -106,7 +106,13 @@ export default function MatchScreen() {
 
   return (
     <div className="app-shell">
-      <div style={{ padding: "0 16px", flexShrink: 0 }}>
+      <div style={{
+        padding: "0 16px",
+        position: "sticky",
+        top: "env(safe-area-inset-top)",
+        zIndex: 10,
+        background: "var(--color-bg)",
+      }}>
         <Header />
       </div>
 
@@ -237,7 +243,6 @@ export default function MatchScreen() {
         </div>
 
         {/* ── Event log ──────────────────────────────────────── */}
-        <div style={{ flex: 1 }} />
         <EventLog />
       </div>
 
