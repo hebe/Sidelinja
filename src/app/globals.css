@@ -106,7 +106,7 @@ body {
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  padding: 0 var(--spacing-screen) var(--spacing-screen);
+  padding: 0 var(--spacing-screen);
 }
 
 /* ─── Header ─────────────────────────────────────────────────────────── */
