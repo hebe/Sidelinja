@@ -296,6 +296,7 @@ export default function TowerOfHanoi({ onClose }: Props) {
           padding: "16px 20px",
           paddingBottom: "max(16px, env(safe-area-inset-bottom))",
           borderTop: "1.5px solid var(--color-border)",
+          background: "var(--color-bg-deep)",
           display: "flex",
           gap: 12,
           flexShrink: 0,
