@@ -51,13 +51,9 @@ export default function Header({ onEasterEgg }: HeaderProps = {}) {
           aria-label="Bytt skjerm"
           style={{ position: "absolute", top: 4, right: 4 }}
         >
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-            <line x1="4" y1="6" x2="20" y2="6" />
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <line x1="4" y1="18" x2="20" y2="18" />
-            <line x1="9" y1="4" x2="9" y2="8" />
-            <line x1="15" y1="10" x2="15" y2="14" />
-            <line x1="11" y1="16" x2="11" y2="20" />
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="9 17 4 12 9 7" />
+            <path d="M4 12h11a5 5 0 0 0 0-10h-2" />
           </svg>
         </button>
       </div>

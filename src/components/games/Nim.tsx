@@ -6,7 +6,7 @@ interface Props {
   onClose: () => void;
 }
 
-const PILE_OPTIONS = [9, 12, 15, 18, 21];
+const PILE_OPTIONS = [9, 10, 12, 13, 15, 16, 18, 21];
 const DEFAULT_PILE = 15;
 
 type Phase = "human" | "computer" | "won" | "lost";
