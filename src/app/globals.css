@@ -525,8 +525,9 @@ body {
 /* ─── Action Buttons Grid ────────────────────────────────────────────── */
 .action-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 110px 110px;
   gap: 8px;
+  justify-content: center;
 }
 
 .action-btn {
