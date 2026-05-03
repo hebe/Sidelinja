@@ -106,7 +106,13 @@ export default function MatchScreen() {
 
   return (
     <div className="app-shell">
-      <div style={{ padding: "0 16px", flexShrink: 0 }}>
+      <div style={{
+        padding: "0 16px",
+        position: "sticky",
+        top: "env(safe-area-inset-top)",
+        zIndex: 10,
+        background: "var(--color-bg)",
+      }}>
         <Header />
       </div>
 
@@ -202,42 +208,14 @@ export default function MatchScreen() {
 
           {/* Action buttons */}
           <div className="action-grid">
-            {/* Home buttons */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <button
-                className="action-btn action-btn-goal"
-                onClick={() => setModal({ type: "mal", team: "home" })}
-              >
-                MÅL
-              </button>
-              <button
-                className="action-btn action-btn-event"
-                onClick={() => setModal({ type: "hendelse", team: "home" })}
-              >
-                Hendelse
-              </button>
-            </div>
-
-            {/* Away buttons */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <button
-                className="action-btn action-btn-goal"
-                onClick={() => setModal({ type: "mal", team: "away" })}
-              >
-                MÅL
-              </button>
-              <button
-                className="action-btn action-btn-event"
-                onClick={() => setModal({ type: "hendelse", team: "away" })}
-              >
-                Hendelse
-              </button>
-            </div>
+            <button className="action-btn action-btn-goal" onClick={() => setModal({ type: "mal", team: "home" })}>MÅL</button>
+            <button className="action-btn action-btn-goal" onClick={() => setModal({ type: "mal", team: "away" })}>MÅL</button>
+            <button className="action-btn action-btn-event" onClick={() => setModal({ type: "hendelse", team: "home" })}>Hendelse</button>
+            <button className="action-btn action-btn-event" onClick={() => setModal({ type: "hendelse", team: "away" })}>Hendelse</button>
           </div>
         </div>
 
         {/* ── Event log ──────────────────────────────────────── */}
-        <div style={{ flex: 1 }} />
         <EventLog />
       </div>
 
