@@ -9,7 +9,7 @@ interface Props {
 
 const GAMES: { id: Game; icon: string; name: string; desc: string; available: boolean }[] = [
   { id: "hanoi", icon: "🗼", name: "Tårnene i Hanoi", desc: "Flytt ringene fra venstre til høyre tårn", available: true },
-  { id: "ttt", icon: "✕", name: "Tripp-trapp-tresko", desc: "Tre på rad mot deg selv", available: false },
+  { id: "ttt", icon: "🪨", name: "Nim", desc: "Ta 1 eller 2 perler — ikke ta den siste", available: true },
   { id: "quiz", icon: "❓", name: "Quiz", desc: "Fotball, geografi og pop 90s/00s", available: true },
 ];
 
