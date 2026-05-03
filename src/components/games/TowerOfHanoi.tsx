@@ -131,44 +131,55 @@ export default function TowerOfHanoi({ onClose }: Props) {
           </div>
         </div>
 
-        {/* Counters */}
-        <div style={{ display: "flex", gap: 8 }}>
-          <div
-            style={{
-              background: "var(--color-surface)",
-              borderRadius: 10,
-              padding: "4px 10px",
-              textAlign: "center",
-              minWidth: 48,
-            }}
-          >
-            <div style={{ fontSize: "0.65rem", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              Trekk
-            </div>
-            <div style={{ fontWeight: 700, fontSize: "1.1rem", fontVariantNumeric: "tabular-nums" }}>{moves}</div>
+        {/* Spacer to balance the close button */}
+        <div style={{ width: 44 }} />
+      </div>
+
+      {/* Counters strip */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 12,
+          padding: "14px 20px",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            background: "var(--color-surface)",
+            borderRadius: 10,
+            padding: "6px 20px",
+            textAlign: "center",
+            minWidth: 80,
+          }}
+        >
+          <div style={{ fontSize: "0.65rem", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            Trekk
+          </div>
+          <div style={{ fontWeight: 700, fontSize: "1.3rem", fontVariantNumeric: "tabular-nums" }}>{moves}</div>
+        </div>
+        <div
+          style={{
+            background: "var(--color-surface)",
+            borderRadius: 10,
+            padding: "6px 20px",
+            textAlign: "center",
+            minWidth: 80,
+          }}
+        >
+          <div style={{ fontSize: "0.65rem", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            Optimalt
           </div>
           <div
             style={{
-              background: "var(--color-surface)",
-              borderRadius: 10,
-              padding: "4px 10px",
-              textAlign: "center",
-              minWidth: 48,
+              fontWeight: 700,
+              fontSize: "1.3rem",
+              fontVariantNumeric: "tabular-nums",
+              color: "var(--color-accent-interactive)",
             }}
           >
-            <div style={{ fontSize: "0.65rem", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              Optimalt
-            </div>
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: "1.1rem",
-                fontVariantNumeric: "tabular-nums",
-                color: "var(--color-accent-interactive)",
-              }}
-            >
-              {optimal}
-            </div>
+            {optimal}
           </div>
         </div>
       </div>
@@ -178,10 +189,10 @@ export default function TowerOfHanoi({ onClose }: Props) {
         style={{
           flex: 1,
           display: "flex",
-          alignItems: "stretch",
+          alignItems: "flex-end",
           justifyContent: "center",
           gap: 12,
-          padding: "20px 16px 0",
+          padding: "0 16px 100px",
           overflow: "hidden",
         }}
       >
@@ -204,7 +215,7 @@ export default function TowerOfHanoi({ onClose }: Props) {
                 animation: isShaking ? "hanoi-shake 0.4s ease" : undefined,
               }}
             >
-              {/* Disk stack — render empty rows first so disks sit at the bottom */}
+              {/* Disk stack */}
               <div
                 style={{
                   width: "100%",
@@ -212,18 +223,12 @@ export default function TowerOfHanoi({ onClose }: Props) {
                   flexDirection: "column",
                   alignItems: "center",
                   gap: 4,
-                  flexGrow: 1,
+                  height: maxDisks * 32 - 4,
                   justifyContent: "flex-end",
                 }}
               >
-                {/* Pad with empty slots */}
-                {Array.from({ length: maxDisks - tower.length }).map((_, i) => (
-                  <div key={`empty-${i}`} style={{ height: 28 }} />
-                ))}
-
-                {tower.map((size, dIdx) => {
-                  const isTop = dIdx === 0;
-                  const isSelectedDisk = isSelected && isTop;
+                {tower.map((size) => {
+                  const isSelectedDisk = isSelected && size === towers[tIdx][0];
                   const widthPct = 30 + (size / numDisks) * 55;
 
                   return (
@@ -308,7 +313,7 @@ export default function TowerOfHanoi({ onClose }: Props) {
           value={numDisks}
           onChange={(e) => handleDiskChange(Number(e.target.value))}
           className="field-input"
-          style={{ flex: 1, fontSize: "var(--font-size-btn)", fontWeight: 600 }}
+          style={{ flex: 1, fontSize: "var(--font-size-btn)", textAlign: "center", fontWeight: 600 }}
         >
           {[3, 4, 5, 6, 7, 8].map((n) => (
             <option key={n} value={n}>
