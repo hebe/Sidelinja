@@ -643,10 +643,12 @@ body {
   background: var(--color-bg-deep);
   border-radius: var(--modal-radius);
   z-index: 50;
-  padding-bottom: min(env(safe-area-inset-bottom), 50px);
   box-shadow: var(--shadow-modal);
   animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  /* dvh tracks the *visual* viewport — shrinks when browser address bar
+     or soft keyboard appears. Falls back to vh on very old browsers. */
   max-height: 92vh;
+  max-height: 92dvh;
   display: flex;
   flex-direction: column;
 }
@@ -687,8 +689,17 @@ body {
 
 .sheet-footer {
   padding: 16px 20px;
+  /* In PWA (no browser chrome) env(safe-area-inset-bottom) ≈ 34px on notched iPhones.
+     In browser mode the address bar sits outside the visual viewport so 16px is enough. */
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   flex-shrink: 0;
   border-top: 1px solid var(--color-border);
+}
+
+/* Sheets with no footer (e.g. game history, game picker) need their own
+   bottom breathing room so content isn't hidden under the home indicator. */
+.sheet-body:last-child {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
 }
 
 /* ─── Modal Fields ───────────────────────────────────────────────────── */
