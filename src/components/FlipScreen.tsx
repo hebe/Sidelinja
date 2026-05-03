@@ -5,6 +5,7 @@ import { useGameStore } from "@/store/gameStore";
 import Header from "./Header";
 import EasterEggModal from "./games/EasterEggModal";
 import TowerOfHanoi from "./games/TowerOfHanoi";
+import Quiz from "./games/Quiz";
 
 interface HistoryGame {
   id: string;
@@ -200,6 +201,9 @@ export default function FlipScreen() {
       )}
       {activeGame === "hanoi" && (
         <TowerOfHanoi onClose={() => setActiveGame(null)} />
+      )}
+      {activeGame === "quiz" && (
+        <Quiz onClose={() => setActiveGame(null)} />
       )}
 
       {/* ── Game event sheet ─────────────────────────────────────────────── */}

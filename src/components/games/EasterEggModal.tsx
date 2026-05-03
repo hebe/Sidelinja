@@ -10,7 +10,7 @@ interface Props {
 const GAMES: { id: Game; icon: string; name: string; desc: string; available: boolean }[] = [
   { id: "hanoi", icon: "🗼", name: "Tårnene i Hanoi", desc: "Flytt ringene fra venstre til høyre tårn", available: true },
   { id: "ttt", icon: "✕", name: "Tripp-trapp-tresko", desc: "Tre på rad mot deg selv", available: false },
-  { id: "quiz", icon: "❓", name: "Fotballquiz", desc: "Spørsmål om fotball (kommer snart)", available: false },
+  { id: "quiz", icon: "❓", name: "Quiz", desc: "Fotball, geografi og pop 90s/00s", available: true },
 ];
 
 export default function EasterEggModal({ onClose, onSelectGame }: Props) {
