@@ -6,6 +6,7 @@ import Header from "./Header";
 import EasterEggModal from "./games/EasterEggModal";
 import TowerOfHanoi from "./games/TowerOfHanoi";
 import Quiz from "./games/Quiz";
+import Nim from "./games/Nim";
 
 interface HistoryGame {
   id: string;
@@ -204,6 +205,9 @@ export default function FlipScreen() {
       )}
       {activeGame === "quiz" && (
         <Quiz onClose={() => setActiveGame(null)} />
+      )}
+      {activeGame === "ttt" && (
+        <Nim onClose={() => setActiveGame(null)} />
       )}
 
       {/* ── Game event sheet ─────────────────────────────────────────────── */}
