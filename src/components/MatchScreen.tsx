@@ -208,37 +208,10 @@ export default function MatchScreen() {
 
           {/* Action buttons */}
           <div className="action-grid">
-            {/* Home buttons */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <button
-                className="action-btn action-btn-goal"
-                onClick={() => setModal({ type: "mal", team: "home" })}
-              >
-                MÅL
-              </button>
-              <button
-                className="action-btn action-btn-event"
-                onClick={() => setModal({ type: "hendelse", team: "home" })}
-              >
-                Hendelse
-              </button>
-            </div>
-
-            {/* Away buttons */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <button
-                className="action-btn action-btn-goal"
-                onClick={() => setModal({ type: "mal", team: "away" })}
-              >
-                MÅL
-              </button>
-              <button
-                className="action-btn action-btn-event"
-                onClick={() => setModal({ type: "hendelse", team: "away" })}
-              >
-                Hendelse
-              </button>
-            </div>
+            <button className="action-btn action-btn-goal" onClick={() => setModal({ type: "mal", team: "home" })}>MÅL</button>
+            <button className="action-btn action-btn-goal" onClick={() => setModal({ type: "mal", team: "away" })}>MÅL</button>
+            <button className="action-btn action-btn-event" onClick={() => setModal({ type: "hendelse", team: "home" })}>Hendelse</button>
+            <button className="action-btn action-btn-event" onClick={() => setModal({ type: "hendelse", team: "away" })}>Hendelse</button>
           </div>
         </div>
 

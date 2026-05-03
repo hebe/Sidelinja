@@ -435,9 +435,7 @@ body {
 }
 
 /* ─── Score Section ──────────────────────────────────────────────────── */
-.score-section {
-  flex-shrink: 0;
-}
+.score-section {}
 
 .score-header {
   display: flex;
@@ -528,7 +526,7 @@ body {
 .action-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .action-btn {
