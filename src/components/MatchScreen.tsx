@@ -103,6 +103,7 @@ export default function MatchScreen() {
   const isActive =
     game.status === "first_half" || game.status === "second_half";
   const isFinished = game.status === "finished";
+  const isOvertime = isActive && game.timerSeconds > game.halfDuration * 60;
 
   return (
     <div className="app-shell">
@@ -130,7 +131,12 @@ export default function MatchScreen() {
             onKeyDown={(e) => e.key === "Enter" && !isFinished && setClockModalOpen(true)}
             aria-label="Kampstatus"
           >
-            <span className="clock-time">{clockText}</span>
+            <span
+              className="clock-time"
+              style={isOvertime ? { color: "oklch(0.83 0.10 5)" } : undefined}
+            >
+              {clockText}
+            </span>
             {isActive && (
               <button
                 className="play-btn"
@@ -138,12 +144,12 @@ export default function MatchScreen() {
                 aria-label={game.isRunning ? "Pause" : "Start"}
               >
                 {game.isRunning ? (
-                  <svg viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="32" height="32" fill="white" aria-hidden="true">
                     <rect x="5" y="4" width="4" height="16" rx="1.5" />
                     <rect x="15" y="4" width="4" height="16" rx="1.5" />
                   </svg>
                 ) : (
-                  <svg viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="32" height="32" fill="white" aria-hidden="true">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 )}
