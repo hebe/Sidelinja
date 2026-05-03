@@ -526,8 +526,9 @@ body {
 .action-grid {
   display: grid;
   grid-template-columns: 110px 110px;
-  gap: 8px;
+  gap: 40px;
   justify-content: center;
+  margin-bottom: 100px;
 }
 
 .action-btn {
