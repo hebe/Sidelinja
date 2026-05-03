@@ -122,7 +122,7 @@ export default function HendelseModal({ team, editEventId, onClose }: Props) {
     }
   }
 
-  const isNumberRequired = hendelseType !== "SKADE";
+  const isNumberRequired = hendelseType === "KORT";
 
   return (
     <>
@@ -170,7 +170,7 @@ export default function HendelseModal({ team, editEventId, onClose }: Props) {
                   onClick={() => setHendelseType(t)}
                 >
                   <span className="type-icon">
-                    {t === "STRAFFE" ? "⚽" : t === "KORT" ? "🟨" : "🤕"}
+                    {t === "STRAFFE" ? "🎯" : t === "KORT" ? "🟨" : "🤕"}
                   </span>
                   {t === "STRAFFE" ? "Straffe" : t === "KORT" ? "Kort" : "Skade"}
                 </button>

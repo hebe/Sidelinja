@@ -39,7 +39,8 @@ function formatHistoryDate(iso: string): string {
 }
 
 function eventIcon(e: HistoryEvent): string {
-  if (e.type === "GOAL" || e.type === "PENALTY") return "⚽";
+  if (e.type === "GOAL") return "⚽";
+  if (e.type === "PENALTY") return "🥅";
   if (e.type === "INJURY") return "🤕";
   if (e.subtype === "RED" || e.subtype === "DIRECT_RED") return "🟥";
   return "🟨";
