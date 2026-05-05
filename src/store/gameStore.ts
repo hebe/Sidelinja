@@ -339,8 +339,8 @@ export function useClockText(): string {
   const halfDur = game.halfDuration * 60;
   let secs: number;
 
-  if (display === "igjen") {
-    secs = Math.max(0, halfDur - game.timerSeconds);
+  if (display === "igjen" && game.timerSeconds <= halfDur) {
+    secs = halfDur - game.timerSeconds;
   } else {
     secs = game.timerSeconds;
   }
