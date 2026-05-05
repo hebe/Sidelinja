@@ -4,9 +4,10 @@ import { useGameStore } from "@/store/gameStore";
 
 interface HeaderProps {
   onEasterEgg?: () => void;
+  onRules?: () => void;
 }
 
-export default function Header({ onEasterEgg }: HeaderProps = {}) {
+export default function Header({ onEasterEgg, onRules }: HeaderProps = {}) {
   const screen = useGameStore((s) => s.screen);
   const setScreen = useGameStore((s) => s.setScreen);
 
@@ -43,6 +44,25 @@ export default function Header({ onEasterEgg }: HeaderProps = {}) {
             aria-label="Tidsfordriv"
           >
             🤹
+          </button>
+        )}
+        {onRules && (
+          <button
+            onClick={onRules}
+            style={{
+              position: "absolute",
+              top: 4,
+              left: 44,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "1.4rem",
+              lineHeight: 1,
+              padding: 4,
+            }}
+            aria-label="Fotballreglene"
+          >
+            🤔
           </button>
         )}
         <button

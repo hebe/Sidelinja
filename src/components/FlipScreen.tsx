@@ -7,6 +7,7 @@ import EasterEggModal from "./games/EasterEggModal";
 import TowerOfHanoi from "./games/TowerOfHanoi";
 import Quiz from "./games/Quiz";
 import Nim from "./games/Nim";
+import RulesGuide from "./games/RulesGuide";
 
 interface HistoryGame {
   id: string;
@@ -69,6 +70,7 @@ export default function FlipScreen() {
 
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [activeGame, setActiveGame] = useState<"hanoi" | "ttt" | "quiz" | null>(null);
+  const [showRules, setShowRules] = useState(false);
 
   useEffect(() => {
     fetch("/api/games")
@@ -107,7 +109,7 @@ export default function FlipScreen() {
   return (
     <div className="app-shell">
       <div style={{ padding: "0 16px", flexShrink: 0 }}>
-        <Header onEasterEgg={() => setShowEasterEgg(true)} />
+        <Header onEasterEgg={() => setShowEasterEgg(true)} onRules={() => setShowRules(true)} />
       </div>
 
       <div className="screen">
@@ -209,6 +211,9 @@ export default function FlipScreen() {
       )}
       {activeGame === "ttt" && (
         <Nim onClose={() => setActiveGame(null)} />
+      )}
+      {showRules && (
+        <RulesGuide onClose={() => setShowRules(false)} />
       )}
 
       {/* ── Game event sheet ─────────────────────────────────────────────── */}
