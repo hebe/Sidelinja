@@ -265,13 +265,29 @@ export default function FlipScreen() {
                   Ingen hendelser registrert.
                 </div>
               )}
-              {events.map((e) => (
-                <div key={e.id} className="event-row">
-                  <span className="event-minute">{e.minute}&apos;</span>
-                  <span className="event-icon">{eventIcon(e)}</span>
-                  <span className="event-team">{eventLabel(e, selectedGame)}</span>
-                </div>
-              ))}
+              {(() => {
+                let home = 0;
+                let away = 0;
+                return events.map((e) => {
+                  let score: string | null = null;
+                  if (e.type === "GOAL" || e.type === "PENALTY") {
+                    if (e.is_selvmal) {
+                      if (e.team === "home") away++; else home++;
+                    } else {
+                      if (e.team === "home") home++; else away++;
+                    }
+                    score = `${home}–${away}`;
+                  }
+                  return (
+                    <div key={e.id} className="event-row">
+                      <span className="event-minute">{e.minute}&apos;</span>
+                      <span className="event-icon">{eventIcon(e)}</span>
+                      <span className="event-team">{eventLabel(e, selectedGame)}</span>
+                      {score && <span className="event-score">{score}</span>}
+                    </div>
+                  );
+                });
+              })()}
               <div style={{ height: 16 }} />
             </div>
           </div>

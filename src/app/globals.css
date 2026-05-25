@@ -626,6 +626,13 @@ body {
   font-weight: 600;
 }
 
+.event-score {
+  font-weight: 700;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
 /* ─── Bottom Sheet ───────────────────────────────────────────────────── */
 .sheet-overlay {
   position: fixed;

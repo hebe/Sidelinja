@@ -21,7 +21,8 @@ export default function MalModal({ team, editEventId, onClose }: Props) {
   const addEvent = useGameStore((s) => s.addEvent);
   const updateEvent = useGameStore((s) => s.updateEvent);
   const deleteEvent = useGameStore((s) => s.deleteEvent);
-  const rawSecs = game?.timerSeconds ?? 0;
+  const halfOffset = ((game?.currentHalf ?? 1) - 1) * (game?.halfDuration ?? 0) * 60;
+  const rawSecs = halfOffset + (game?.timerSeconds ?? 0);
 
   const existingEvent = editEventId
     ? events.find((e) => e.id === editEventId)
