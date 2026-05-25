@@ -19,18 +19,24 @@ interface EditState {
 
 function EventRowItem({
   event,
+  score,
   game,
   onEdit,
 }: {
   event: GameEvent;
+  score: string | null;
   game: NonNullable<ReturnType<typeof useGameStore.getState>["currentGame"]>;
   onEdit: () => void;
 }) {
+  if (event.type === "HALFTIME") {
+    return <div className="event-pause">Pause</div>;
+  }
   return (
     <div className="event-row" onClick={onEdit} style={{ cursor: "pointer" }}>
       <span className="event-minute">{event.minute}&apos;</span>
       <span className="event-icon">{eventIcon(event)}</span>
       <span className="event-team">{eventLabel(event, game)}</span>
+      {score && <span className="event-score">{score}</span>}
     </div>
   );
 }
@@ -43,8 +49,22 @@ export default function EventLog() {
 
   if (!game) return null;
 
-  const sorted = [...events].sort((a, b) => b.minute - a.minute);
+  const sorted = [...events].slice().reverse();
   const preview = sorted.slice(0, 3);
+
+  const scoreMap = new Map<string, string>();
+  let liveHome = 0;
+  let liveAway = 0;
+  for (const e of events) {
+    if (e.type === "GOAL" || e.type === "PENALTY") {
+      if (e.isSelvmål) {
+        if (e.team === "home") liveAway++; else liveHome++;
+      } else {
+        if (e.team === "home") liveHome++; else liveAway++;
+      }
+      scoreMap.set(e.id, `${liveHome}–${liveAway}`);
+    }
+  }
 
   function openEdit(event: GameEvent) {
     const isGoal = event.type === "GOAL" || event.type === "PENALTY";
@@ -81,7 +101,7 @@ export default function EventLog() {
           </div>
         ) : (
           preview.map((e) => (
-            <EventRowItem key={e.id} event={e} game={game} onEdit={() => openEdit(e)} />
+            <EventRowItem key={e.id} event={e} score={scoreMap.get(e.id) ?? null} game={game} onEdit={() => openEdit(e)} />
           ))
         )}
       </div>
@@ -110,7 +130,7 @@ export default function EventLog() {
                 </div>
               ) : (
                 sorted.map((e) => (
-                  <EventRowItem key={e.id} event={e} game={game} onEdit={() => openEdit(e)} />
+                  <EventRowItem key={e.id} event={e} score={scoreMap.get(e.id) ?? null} game={game} onEdit={() => openEdit(e)} />
                 ))
               )}
             </div>

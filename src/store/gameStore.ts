@@ -8,7 +8,7 @@ export type GameStatus =
   | "second_half"
   | "finished";
 
-export type EventType = "GOAL" | "CARD" | "PENALTY" | "INJURY";
+export type EventType = "GOAL" | "CARD" | "PENALTY" | "INJURY" | "HALFTIME";
 export type EventSubtype =
   | "SELVMÅL"
   | "YELLOW"
@@ -194,6 +194,8 @@ export const useGameStore = create<GameStore>()(
             ? secondsAtStart + Math.floor((Date.now() - clockStartedAt) / 1000)
             : currentGame.timerSeconds;
 
+        const halfOffset = (currentGame.currentHalf - 1) * currentGame.halfDuration * 60;
+
         if (status === "first_half") {
           if (numHalves === 1) {
             set({
@@ -206,7 +208,7 @@ export const useGameStore = create<GameStore>()(
               },
             });
           } else {
-            set({
+            set((state) => ({
               currentGame: {
                 ...currentGame,
                 status: "halftime",
@@ -214,7 +216,18 @@ export const useGameStore = create<GameStore>()(
                 clockStartedAt: null,
                 timerSeconds: finalSeconds,
               },
-            });
+              events: [
+                ...state.events,
+                {
+                  id: generateId(),
+                  gameId: currentGame.id,
+                  type: "HALFTIME" as const,
+                  team: "home" as const,
+                  minute: Math.floor((halfOffset + finalSeconds) / 60),
+                  secondsRaw: halfOffset + finalSeconds,
+                },
+              ],
+            }));
           }
         } else if (status === "halftime") {
           set({
@@ -230,7 +243,7 @@ export const useGameStore = create<GameStore>()(
           });
         } else if (status === "second_half") {
           if (currentGame.currentHalf < numHalves) {
-            set({
+            set((state) => ({
               currentGame: {
                 ...currentGame,
                 status: "halftime",
@@ -238,7 +251,18 @@ export const useGameStore = create<GameStore>()(
                 clockStartedAt: null,
                 timerSeconds: finalSeconds,
               },
-            });
+              events: [
+                ...state.events,
+                {
+                  id: generateId(),
+                  gameId: currentGame.id,
+                  type: "HALFTIME" as const,
+                  team: "home" as const,
+                  minute: Math.floor((halfOffset + finalSeconds) / 60),
+                  secondsRaw: halfOffset + finalSeconds,
+                },
+              ],
+            }));
           } else {
             set({
               currentGame: {
@@ -381,6 +405,7 @@ export function useAdvanceLabel(): string | null {
 }
 
 export function eventIcon(e: GameEvent): string {
+  if (e.type === "HALFTIME") return "";
   if (e.type === "GOAL") return "⚽";
   if (e.type === "PENALTY") return "🥅";
   if (e.type === "INJURY") return "🤕";

@@ -28,7 +28,7 @@ export async function GET(
       SELECT id, minute, type, team, player_number, subtype, is_selvmal
       FROM events
       WHERE game_id = ${id}
-      ORDER BY minute ASC, created_at ASC
+      ORDER BY created_at ASC
     `;
     return NextResponse.json({ events });
   } catch (e) {

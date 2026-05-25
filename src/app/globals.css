@@ -626,6 +626,24 @@ body {
   font-weight: 600;
 }
 
+.event-score {
+  font-weight: 700;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.event-pause {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
 /* ─── Bottom Sheet ───────────────────────────────────────────────────── */
 .sheet-overlay {
   position: fixed;
