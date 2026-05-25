@@ -278,6 +278,9 @@ export default function FlipScreen() {
                     }
                     score = `${home}–${away}`;
                   }
+                  if (e.type === "HALFTIME") {
+                    return <div key={e.id} className="event-pause">Pause</div>;
+                  }
                   return (
                     <div key={e.id} className="event-row">
                       <span className="event-minute">{e.minute}&apos;</span>

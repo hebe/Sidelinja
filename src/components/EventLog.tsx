@@ -28,6 +28,9 @@ function EventRowItem({
   game: NonNullable<ReturnType<typeof useGameStore.getState>["currentGame"]>;
   onEdit: () => void;
 }) {
+  if (event.type === "HALFTIME") {
+    return <div className="event-pause">Pause</div>;
+  }
   return (
     <div className="event-row" onClick={onEdit} style={{ cursor: "pointer" }}>
       <span className="event-minute">{event.minute}&apos;</span>
